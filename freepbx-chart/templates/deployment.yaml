@@ -2,6 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "freepbx-chart.fullname" . }}
+  {{- with .Values.Annotations }}
+    annotations:
+      {{- toYaml . | nindent 6 }}
+  {{- end }}
   labels:
     {{- include "freepbx-chart.labels" . | nindent 4 }}
 spec:
