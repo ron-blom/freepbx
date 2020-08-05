@@ -37,6 +37,13 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: freepbx-mysql
+              mountPath: /var/lib/mysql
+            - name: freepbx-monitor
+              mountPath: /var/spool/asterisk/monitor
+            - name: freepbx-backup
+              mountPath: /backup
           ports:
             - name: http
               containerPort: 80
@@ -63,3 +70,13 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+      - name: freepbx-mysql
+        persistentVolumeClaim:
+          claimName: freepbx-mysql
+      - name: freepbx-monitor
+        persistentVolumeClaim:
+          claimName: freepbx-monitor
+      - name: freepbx-backup
+        persistentVolumeClaim:
+          claimName: freepbx-backup
