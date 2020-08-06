@@ -55,9 +55,9 @@ RUN sed -i 's/^upload_max_filesize = 2M/upload_max_filesize = 120M/' /etc/php5/a
 	&& sed -i 's/^memory_limit = 128M/memory_limit = 256M/' /etc/php5/apache2/php.ini \
 	&& cp /etc/apache2/apache2.conf /etc/apache2/apache2.conf_orig \
 	&& sed -i 's/^\(User\|Group\).*/\1 asterisk/' /etc/apache2/apache2.conf \
-	&& sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf \
-	&& sed -i 's/Listen 80/Listen 82/' /etc/apache2/ports.conf \
-	&& sed -i 's/<VirtualHost *:80>/<VirtualHost *:82>/' /etc/apache2/sites-enabled/000-default.conf 
+	&& sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+#sed -i 's/Listen 80/Listen 82/' /etc/apache2/ports.conf \
+#sed -i 's/<VirtualHost *:80>/<VirtualHost *:82>/' /etc/apache2/sites-enabled/000-default.conf 
 
 COPY ./config/odbcinst.ini /etc/odbcinst.ini
 COPY ./config/odbc.ini /etc/odbc.ini
@@ -75,6 +75,8 @@ RUN cd /usr/src ; \
 	fwconsole ma upgradeall ; \
 	fwconsole ma downloadinstall announcement backup bulkhandler calendar ringgroups timeconditions ivr restapi cel configedit asteriskinfo ; \
 	fwconsole ma downloadinstall timeconditions paging hotelwakeup; \
+	fwconsole sound --no-interaction --install nl; \
+	fwconsole sound --global nl; \
 	/etc/init.d/mysql stop ;\
 	rm -rf /usr/src/freepbx
 
@@ -87,27 +89,29 @@ RUN	git clone https://github.com/BelledonneCommunications/bcg729 /usr/src/bcg729
 	&& ./autogen.sh \
 	&& ./configure --libdir=/lib \
 	&& make \
-	&& make install
+	&& make install \
+	&& rm -rf /usr/src/bcg729
 
 RUN git clone https://bitbucket.org/arkadi/asterisk-g72x.git /usr/src/asterisk-g72x \
 	&& cd /usr/src/asterisk-g72x \
 	&& ./autogen.sh \
 	&& ./configure --with-bcg729 --with-asterisk160 --enable-atom \
 	&& make \
-	&& make install
+	&& make install \
+	&& rm -rf /usr/src/asterisk-g72x
 
 RUN sed -i 's/^user		= mysql/user		= root/' /etc/mysql/my.cnf
 
 COPY ./run /run
 RUN chmod +x /run/*
 
-RUN chown asterisk:asterisk -R /var/spool/asterisk \
-    && cp -p /var/lib/asterisk/sounds/nl/vm-INBOX.g722 /var/lib/asterisk/sounds/nl/vm-INBOXs.g722 \
-	&& cp -p /var/lib/asterisk/sounds/nl/vm-INBOX.ulaw /var/lib/asterisk/sounds/nl/vm-INBOXs.ulaw
+RUN chown asterisk:asterisk -R /var/spool/asterisk
+#	&& cp -p /var/lib/asterisk/sounds/nl/vm-INBOX.g722 /var/lib/asterisk/sounds/nl/vm-INBOXs.g722 \
+#	&& cp -p /var/lib/asterisk/sounds/nl/vm-INBOX.ulaw /var/lib/asterisk/sounds/nl/vm-INBOXs.ulaw
 
 CMD /run/startup.sh
 
-EXPOSE 82 3306 5060 5061 5160 5161 4569 10000-20000/udp
+EXPOSE 80 3306 5060 5061 5160 5161 4569 10000-20000/udp
 
 #recordings data
 VOLUME [ "/var/spool/asterisk/monitor" ]
