@@ -2,6 +2,14 @@
 
 #https://docs.docker.com/engine/admin/multi-service_container/
 
+#restore database if new volume mount
+if [ ! -f /var/lib/mysql/ibdata1 ]; then
+  echo "Restoring backup from /root/mysql.tar.gz"
+  tar xzvf /root/mysql.tar.gz -C /
+  chown mysql:mysql -R /var/lib/mysql ; \
+  echo "Done"
+fi
+
 /etc/init.d/mysql start
 status=$?
 if [ $status -ne 0 ]; then
@@ -14,7 +22,6 @@ if [ $status -ne 0 ]; then
   echo "Failed to start fwconsole: $status"
   exit $status
 fi
-
 
 #restore backup if exists
 if [ -f /backup/new.tgz ]; then

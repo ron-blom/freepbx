@@ -78,6 +78,7 @@ RUN cd /usr/src ; \
 	fwconsole sound --no-interaction --install nl; \
 	fwconsole sound --global nl; \
 	/etc/init.d/mysql stop ;\
+	tar cvzf /root/mysql.tar.gz /var/lib/mysql ;\
 	rm -rf /usr/src/freepbx
 
 RUN a2enmod rewrite
