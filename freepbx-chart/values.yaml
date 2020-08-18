@@ -23,13 +23,13 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-annotations:
+podAnnotations:
   k8s.v1.cni.cncf.io/networks: '[
-          { "name": "macvlan-112",
-            "ips": [ "192.168.112.4/24" ],
-            "mac": "c2:b0:57:49:47:f1",
-            "gateway": [ "192.168.112.1" ]
-          }]'
+    { "name": "macvlan-112",
+      "ips": [ "192.168.112.4/24" ],
+      "mac": "c2:0c:c0:a8:70:04",
+      "gateway": [ "192.168.112.1" ]
+    }]'
 
 podSecurityContext: {}
   # fsGroup: 2000
@@ -47,13 +47,14 @@ service:
   port: 80
 
 ingress:
-  enabled: false
+  enabled: true
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: freepbx.local
-      paths: []
+    - host: freepbx.dagpauwoog.local
+      paths:
+        - /
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
