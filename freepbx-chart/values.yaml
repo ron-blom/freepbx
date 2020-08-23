@@ -26,10 +26,11 @@ serviceAccount:
 podAnnotations:
   k8s.v1.cni.cncf.io/networks: '[
     { "name": "macvlan-112",
-      "ips": [ "192.168.112.4/24" ],
-      "mac": "c2:0c:c0:a8:70:04",
-      "gateway": [ "192.168.112.1" ]
-    }]'
+    "default-route": [ "192.168.112.1" ],
+    "ips": [ "192.168.112.4/24" ],
+    "mac": "c2:0c:c0:a8:70:04",
+    "gateway": [ "192.168.112.1"   ]
+  }]'
 
 podSecurityContext: {}
   # fsGroup: 2000
