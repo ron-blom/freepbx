@@ -2,11 +2,27 @@
 
 #https://docs.docker.com/engine/admin/multi-service_container/
 
-#restore database if new volume mount
+#restore default database if new volume mount
 if [ ! -f /var/lib/mysql/ibdata1 ]; then
   echo "Restoring backup from /root/mysql.tar.gz"
   tar xzvf /root/mysql.tar.gz -C /
-  chown mysql:mysql -R /var/lib/mysql ; \
+  chown mysql:mysql -R /var/lib/mysql
+  echo "Done"
+fi
+
+#restore default config if new volume mount
+if [ ! -f /etc/asterisk/manager.conf ]; then
+  echo "Restoring backup from /root/asterisk-config.tar.gz"
+  tar xzvf /root/asterisk-config.tar.gz -C /
+  chown asterisk:asterisk -R /etc/asterisk
+  echo "Done"
+fi
+
+#restore default lib if new volume mount
+if [ ! -f /var/lib/asterisk/bin/fwconsole ]; then
+  echo "Restoring backup from /root/asterisk-lib.tar.gz"
+  tar xzvf /root/asterisk-lib.tar.gz -C /
+  chown asterisk:asterisk -R /var/lib/asterisk
   echo "Done"
 fi
 
@@ -24,22 +40,22 @@ if [ $status -ne 0 ]; then
 fi
 
 #restore backup if exists
-if [ -f /backup/new.tgz ]; then
-  echo "Restoring backup from /backup/new.tgz"
-  php /var/www/html/admin/modules/backup/bin/restore.php --items=all --restore=/backup/new.tgz
-  echo "Done"
-fi
+# if [ -f /backup/new.tgz ]; then
+#   echo "Restoring backup from /backup/new.tgz"
+#   php /var/www/html/admin/modules/backup/bin/restore.php --items=all --restore=/backup/new.tgz
+#   echo "Done"
+# fi
 #restart freepbx to load everything fine after restoring backup
-fwconsole stop
-if [ $status -ne 0 ]; then
-  echo "Failed to stop fwconsole: $status"
-  exit $status
-fi
-fwconsole start
-if [ $status -ne 0 ]; then
-  echo "Failed to start fwconsole: $status"
-  exit $status
-fi
+# fwconsole stop
+# if [ $status -ne 0 ]; then
+#   echo "Failed to stop fwconsole: $status"
+#   exit $status
+# fi
+# fwconsole start
+# if [ $status -ne 0 ]; then
+#   echo "Failed to start fwconsole: $status"
+#   exit $status
+# fi
 
 
 /etc/init.d/apache2 start

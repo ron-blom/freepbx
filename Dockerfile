@@ -106,7 +106,9 @@ RUN sed -i 's/^user		= mysql/user		= root/' /etc/mysql/my.cnf
 COPY ./run /run
 RUN chmod +x /run/*
 
-RUN chown asterisk:asterisk -R /var/spool/asterisk
+RUN chown asterisk:asterisk -R /var/spool/asterisk \
+ && tar cvzf /root/asterisk-config.tar.gz /etc/asterisk \
+ && tar cvzf /root/asterisk-lib.tar.gz /var/lib/asterisk
 #	&& cp -p /var/lib/asterisk/sounds/nl/vm-INBOX.g722 /var/lib/asterisk/sounds/nl/vm-INBOXs.g722 \
 #	&& cp -p /var/lib/asterisk/sounds/nl/vm-INBOX.ulaw /var/lib/asterisk/sounds/nl/vm-INBOXs.ulaw
 
@@ -115,7 +117,7 @@ CMD /run/startup.sh
 EXPOSE 80 3306 5060 5061 5160 5161 4569 10000-20000/udp
 
 #recordings data
-VOLUME [ "/var/spool/asterisk/monitor" ]
+VOLUME [ "/var/spool/asterisk" ]
 #database data
 VOLUME [ "/var/lib/mysql" ]
 #automatic backup

@@ -13,10 +13,10 @@ metadata:
     heritage: "{{ .Release.Service }}"
 spec:
   accessModes:
-    - "ReadWriteOnce"
+    - ReadWriteOnce
   resources:
     requests:
-      storage: "2Gi"
+      storage: 2Gi
   storageClassName: local-path
 ---
 kind: PersistentVolumeClaim
@@ -34,10 +34,10 @@ metadata:
     heritage: "{{ .Release.Service }}"
 spec:
   accessModes:
-    - "ReadWriteOnce"
+    - ReadWriteOnce
   resources:
     requests:
-      storage: "2Gi"
+      storage: 2Gi
   storageClassName: local-path
 ---
 kind: PersistentVolumeClaim
@@ -55,8 +55,8 @@ metadata:
     heritage: "{{ .Release.Service }}"
 spec:
   accessModes:
-    - "ReadWriteOnce"
+    - ReadWriteOnce
   resources:
     requests:
-      storage: "1Gi"
+      storage: 1Gi
   storageClassName: local-path
