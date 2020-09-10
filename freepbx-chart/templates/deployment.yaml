@@ -41,8 +41,12 @@ spec:
           volumeMounts:
             - name: freepbx-mysql
               mountPath: /var/lib/mysql
-            - name: freepbx-monitor
-              mountPath: /var/spool/asterisk/monitor
+            - name: freepbx-config
+              mountPath: /etc/asterisk
+            - name: freepbx-spool
+              mountPath: /var/spool/asterisk
+            - name: freepbx-lib
+              mountPath: /var/lib/asterisk
             - name: freepbx-backup
               mountPath: /backup
           ports:
@@ -75,9 +79,15 @@ spec:
       - name: freepbx-mysql
         persistentVolumeClaim:
           claimName: freepbx-mysql
-      - name: freepbx-monitor
+      - name: freepbx-lib
         persistentVolumeClaim:
-          claimName: freepbx-monitor
+          claimName: freepbx-lib
+      - name: freepbx-spool
+        persistentVolumeClaim:
+          claimName: freepbx-spool
+      - name: freepbx-config
+        persistentVolumeClaim:
+          claimName: freepbx-config
       - name: freepbx-backup
         persistentVolumeClaim:
           claimName: freepbx-backup

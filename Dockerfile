@@ -25,9 +25,9 @@ RUN apt-get update \
 # 	&& rm -r /usr/src/jansson*
 
 RUN cd /usr/src \
-	&& wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-16.12.0.tar.gz \
-	&& tar xfz asterisk-16.12.0.tar.gz \
-	&& rm -f asterisk-16.12.0.tar.gz \
+	&& wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-16-current.tar.gz \
+	&& tar xfz asterisk-16-current.tar.gz \
+	&& rm -f asterisk-16-current.tar.gz \
 	&& cd asterisk-* \
 	&& contrib/scripts/install_prereq install \
 	&& ./configure --with-jansson-bundled --with-pjproject-bundled \
