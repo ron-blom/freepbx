@@ -1,10 +1,5 @@
-FreePBX
-
-# Docker build and push
-
-docker build -t blomron/freepbx .
-
-docker push blomron/freepbx
+# FreePBX
+https://hub.docker.com/r/izdock/izpbx-asterisk
 
 # Docker run
 

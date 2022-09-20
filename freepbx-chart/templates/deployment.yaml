@@ -39,16 +39,8 @@ spec:
           # - sleep
           # - infinity
           volumeMounts:
-            - name: freepbx-mysql
-              mountPath: /var/lib/mysql
-            - name: freepbx-config
-              mountPath: /etc/asterisk
-            - name: freepbx-spool
-              mountPath: /var/spool/asterisk
-            - name: freepbx-lib
-              mountPath: /var/lib/asterisk
-            - name: freepbx-backup
-              mountPath: /backup
+            - name: freepbx16-data
+              mountPath: /data
           ports:
             - name: http
               containerPort: 80
@@ -76,18 +68,6 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
-      - name: freepbx-mysql
+      - name: freepbx16-data
         persistentVolumeClaim:
-          claimName: freepbx-mysql
-      - name: freepbx-lib
-        persistentVolumeClaim:
-          claimName: freepbx-lib
-      - name: freepbx-spool
-        persistentVolumeClaim:
-          claimName: freepbx-spool
-      - name: freepbx-config
-        persistentVolumeClaim:
-          claimName: freepbx-config
-      - name: freepbx-backup
-        persistentVolumeClaim:
-          claimName: freepbx-backup
+          claimName: freepbx16-data
