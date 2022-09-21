@@ -1,5 +1,5 @@
 apiVersion: v2
-name: freepbx-chart
+name: freepbx16-chart
 description: A Helm to deploy freebpx on k3os server with multus-cni
 
 # A chart can be either an 'application' or a 'library' chart.

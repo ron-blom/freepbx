@@ -1,11 +1,11 @@
-# Default values for freepbx-chart.
+# Default values for freepbx16-chart.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: izdock/izpbx-asterisk:
+  repository: izdock/izpbx-asterisk
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "18.16"
@@ -86,3 +86,14 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+environmentvars:
+  MYSQL_SERVER: 127.0.0.1
+  MYSQL_DATABASE: asterisk
+  MYSQL_USER: asterisk
+  MYSQL_ROOT_PASSWORD: asterisk123
+  MYSQL_PASSWORD: asterisk123
+  APP_DATA: '/data'
+  MARIADB_USER: asterisk
+  MARIADB_PASSWORD: asterisk123
+  MARIADB_ROOT_PASSWORD: asterisk123
