@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "freepbx-chart.fullname" . }}
+  name: {{ include "freepbx16-chart.fullname" . }}
   labels:
-    {{- include "freepbx-chart.labels" . | nindent 4 }}
+    {{- include "freepbx16-chart.labels" . | nindent 4 }}
 spec:
 {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -12,7 +12,7 @@ spec:
     type: Recreate      
   selector:
     matchLabels:
-      {{- include "freepbx-chart.selectorLabels" . | nindent 6 }}
+      {{- include "freepbx16-chart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
     {{- with .Values.podAnnotations }}
@@ -20,13 +20,13 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
-        {{- include "freepbx-chart.selectorLabels" . | nindent 8 }}
+        {{- include "freepbx16-chart.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "freepbx-chart.serviceAccountName" . }}
+      serviceAccountName: {{ include "freepbx16-chart.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -39,16 +39,8 @@ spec:
           # - sleep
           # - infinity
           volumeMounts:
-            - name: freepbx-mysql
-              mountPath: /var/lib/mysql
-            - name: freepbx-config
-              mountPath: /etc/asterisk
-            - name: freepbx-spool
-              mountPath: /var/spool/asterisk
-            - name: freepbx-lib
-              mountPath: /var/lib/asterisk
-            - name: freepbx-backup
-              mountPath: /backup
+            - name: freepbx16-data
+              mountPath: /data
           ports:
             - name: http
               containerPort: 80
@@ -63,6 +55,39 @@ spec:
           #     port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            {{- range $key, $val := .Values.environmentvars }}
+            - name: {{ $key }}
+              value: {{ $val | quote }}
+            {{- end }}
+        - name: mariadb
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: mariadb:10.9
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: freepbx16-mysql
+              mountPath: /var/lib/mysql
+          ports:
+            - name: mysql
+              containerPort: 3306
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            {{- range $key, $val := .Values.environmentvars }}
+            - name: {{ $key }}
+              value: {{ $val | quote }}
+            {{- end }}
+
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -76,18 +101,9 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
-      - name: freepbx-mysql
+      - name: freepbx16-data
         persistentVolumeClaim:
-          claimName: freepbx-mysql
-      - name: freepbx-lib
+          claimName: freepbx16-data
+      - name: freepbx16-mysql
         persistentVolumeClaim:
-          claimName: freepbx-lib
-      - name: freepbx-spool
-        persistentVolumeClaim:
-          claimName: freepbx-spool
-      - name: freepbx-config
-        persistentVolumeClaim:
-          claimName: freepbx-config
-      - name: freepbx-backup
-        persistentVolumeClaim:
-          claimName: freepbx-backup
+          claimName: freepbx16-mysql

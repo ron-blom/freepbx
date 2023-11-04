@@ -1,0 +1,41 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  annotations:
+    helm.sh/resource-policy: "keep"
+    meta.helm.sh/release-name: "{{ $.Release.Name }}"
+    meta.helm.sh/release-namespace: "{{ $.Release.Namespace }}"
+  name: freepbx16-data
+  labels:
+    app: freepbx16-data
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: local-path
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  annotations:
+    helm.sh/resource-policy: "keep"
+    meta.helm.sh/release-name: "{{ $.Release.Name }}"
+    meta.helm.sh/release-namespace: "{{ $.Release.Namespace }}"
+  name: freepbx16-mysql
+  labels:
+    app: freepbx16-mysql
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 4Gi
+  storageClassName: local-path

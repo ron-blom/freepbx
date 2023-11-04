@@ -1,14 +1,14 @@
-# Default values for freepbx-chart.
+# Default values for freepbx16-chart.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: blomron/freepbx
+  repository: izdock/izpbx-asterisk
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: "18.16"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -27,7 +27,7 @@ podAnnotations:
   k8s.v1.cni.cncf.io/networks: '[
     { "name": "macvlan-112",
     "ips": [ "192.168.112.4/24" ],
-    "mac": "c2:0c:c0:a8:70:04",
+    "mac": "c2:0c:c0:a8:70:12",
     "gateway": [ "192.168.112.1"   ]
   }]'
 
@@ -86,3 +86,15 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+environmentvars:
+  TZ: Europe/Amsterdam
+  MYSQL_SERVER: 127.0.0.1
+  MYSQL_DATABASE: asterisk
+  MYSQL_USER: asterisk
+  MYSQL_ROOT_PASSWORD: asterisk123
+  MYSQL_PASSWORD: asterisk123
+  APP_DATA: '/data'
+  MARIADB_USER: asterisk
+  MARIADB_PASSWORD: asterisk123
+  MARIADB_ROOT_PASSWORD: asterisk123

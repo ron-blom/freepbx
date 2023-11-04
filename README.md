@@ -1,10 +1,5 @@
-FreePBX
-
-# Docker build and push
-
-docker build -t blomron/freepbx .
-
-docker push blomron/freepbx
+# FreePBX
+https://hub.docker.com/r/izdock/izpbx-asterisk
 
 # Docker run
 
@@ -12,4 +7,4 @@ docker run --restart always --net host --name freepbx -v /root/freepbx-backup:/b
 
 # Deploy 
 
-helm upgrade --install freepbx-chart ./freepbx-chart
+helm upgrade --install freepbx16-chart ./freepbx16-chart
