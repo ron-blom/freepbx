@@ -8,7 +8,7 @@ image:
   repository: izdock/izpbx-asterisk
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "18.16"
+  tag: "20.16"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -98,3 +98,4 @@ environmentvars:
   MARIADB_USER: asterisk
   MARIADB_PASSWORD: asterisk123
   MARIADB_ROOT_PASSWORD: asterisk123
+  FREEPBX_AUTOUPGRADE_CORE: true
