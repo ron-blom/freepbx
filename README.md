@@ -7,4 +7,4 @@ docker run --restart always --net host --name freepbx -v /root/freepbx-backup:/b
 
 # Deploy 
 
-helm upgrade --install freepbx16-chart ./freepbx16-chart
+helm secrets upgrade --install freepbx16-chart ./freepbx16-chart -f freepbx16-chart/secrets.yaml
